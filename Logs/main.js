@@ -77,7 +77,7 @@ var App = (new function () {
 				return;
 			}
 			KnuddelsServer.getPersistence().setObject('_logsdata', []);
-			
+			KnuddelsServer.getPersistence().setNumber('LogIds', 0);
 			
 			UserPersistenceObjects.deleteAll('UserLogIds');
 		},
@@ -142,6 +142,68 @@ var App = (new function () {
 			}
 		},
 		
+		resetName:function(user,params){
+			if(!user.isAppManager()){
+				return;
+			}
+			
+			if(logaktiv){
+				user.sendPrivateMessage('Die Aktiven Logs, müssen erst deaktiviert werden.');
+				return;
+			}
+			var logids = KnuddelsServer.getPersistence().getObject('_logsdata', []);
+			
+			
+			params = parseInt(params);
+			
+			if(logids.indexOf(params) == -1){
+				user.sendPrivateMessage('Ich finde keinen Log mit der ID '+params);
+				return;
+			} else {
+				//logdata = {id: id, datum: times, uir: users, txt:[]};
+				var logdata = KnuddelsServer.getPersistence().getObject('_logs'+params, {});
+				logdata.commend = undefined
+				KnuddelsServer.getPersistence().setObject('_logs'+params, logdata);
+				user.sendPrivateMessage('Tittel zurückgesetzt.');
+			}
+		},
+		
+		comlog:function(user,params){
+			if(!user.isAppManager()){
+				return;
+			}
+			
+			if(logaktiv){
+				user.sendPrivateMessage('Die Aktiven Logs, müssen erst deaktiviert werden.');
+				return;
+			}
+			var logids = KnuddelsServer.getPersistence().getObject('_logsdata', []);
+			
+			var actions = params.split('~~');
+			
+			if(actions.length != 2){
+				user.sendPrivateMessage('Etwas an der Eingabe stimmt nicht...');
+				return;
+			}
+			
+			actions[0] = parseInt(actions[0]);
+			
+			if(logids.indexOf(actions[0]) == -1){
+				user.sendPrivateMessage('Ich finde keinen Log mit der ID '+actions[0].escapeKCode());
+				return;
+			} else {
+				//logdata = {id: id, datum: times, uir: users, txt:[]};
+				var logdata = KnuddelsServer.getPersistence().getObject('_logs'+actions[0], {});
+				actions[1] = actions[1].escapeKCode();
+				logdata.commend = actions[1];
+				KnuddelsServer.getPersistence().setObject('_logs'+actions[0], logdata);
+				user.sendPrivateMessage('Erfolgreich umbenannt.');
+			}	
+			
+			
+			
+		},
+		
 		showlog:function(user, params){
 			if(!user.isAppManager()){
 				return;
@@ -157,8 +219,21 @@ var App = (new function () {
 				var msg = 'Übersicht der Logs:°#°'
 				for(i=0;i<logids.length;i++){
 					var logdata = KnuddelsServer.getPersistence().getObject('_logs'+logids[i], {});
+										
+					if(logdata.commend != undefined){
+						msg += '°>ID:'+logids[i]+' ~ '+logdata.commend+'|/showlog '+logids[i]+'<°'
+					} else {
+						msg += '°>ID:'+logids[i]+' - Am: '+ new Date(logdata.datum)+' mit ' + logdata.uir.join(',')+'|/showlog '+logids[i]+'<°'
+					}
 					
-					msg += ' °>ID:'+logids[i]+' - Am: '+ new Date(logdata.datum)+' mit ' + logdata.uir.join(',')+'|/showlog '+logids[i]+'<° °YY° °>Löschen|/dellog '+logids[i]+'<°°r° °#°'
+					
+					msg += ' °YY°°>Umbenennen|/tf-overridesb /comlog '+logids[i]+'~~[NeuerTittel]<° °RR° °>Löschen|/dellog '+logids[i]+'<°°r° '
+					
+					if(logdata.commend != undefined){
+						msg += '°>Umbennung löschen|/resetName '+logids[i]+'<°°#°';
+					}
+					msg += '°#°'
+					
 				}
 				
 				user.sendPrivateMessage(msg);

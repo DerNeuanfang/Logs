@@ -28,6 +28,10 @@ var App = (new function () {
 		var user = publicMessage.getAuthor();
 		var txt = publicMessage.getText();
 		
+		if(!logaktiv){
+			return;
+		}
+		
 		log['txt'].push(user.getNick() + ': '+txt);
 	},
 	

@@ -1,3 +1,10 @@
+/*
+Beteiligte Programmierer: DerNeuanfang
+Lizens: General Public License (https://opensource.org/licenses/GPL-3.0)
+
+
+*/
+
 var App = (new function () {
 	var	instance			= this;
 	var logaktiv = false;
@@ -160,7 +167,7 @@ var App = (new function () {
 				user.sendPrivateMessage('Ich finde keinen Log mit der ID '+params);
 				return;
 			} else {
-				//logdata = {id: id, datum: times, uir: users, txt:[]};
+				//logdata = {id: id, datum: times, commend: undefined, uir: users, txt:[]};
 				var logdata = KnuddelsServer.getPersistence().getObject('_logs'+params, {});
 				logdata.commend = undefined
 				KnuddelsServer.getPersistence().setObject('_logs'+params, logdata);

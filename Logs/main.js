@@ -48,9 +48,9 @@ var App = (new function () {
 				return;
 			}
 			
-			log['txt'].push('°GG°Log-Kommentar' + ': '+params+'°r°');
+			log['txt'].push('°GG°Log-Kommentar' + ': '+params.escapeKCode()+'°r°');
 			
-			user.sendPrivateMessage('Der Kommentar:°#° '+params+'°#° Wurde Hinzugefügt und ist im Log sichtbar.');
+			user.sendPrivateMessage('Der Kommentar:°#° '+params.escapeKCode()+'°#° Wurde Hinzugefügt und ist im Log sichtbar.');
 			
 			
 		},

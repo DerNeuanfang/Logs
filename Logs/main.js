@@ -1,8 +1,6 @@
 /*
 Beteiligte Programmierer: DerNeuanfang
 Lizens: General Public License (https://opensource.org/licenses/GPL-3.0)
-
-
 */
 
 var App = (new function () {
@@ -36,7 +34,6 @@ var App = (new function () {
 	},
 	
 	this.chatCommands = {
-		
 		
 		addc:function(user, params){
 			if(!user.isAppManager()){
@@ -180,6 +177,7 @@ var App = (new function () {
 		},
 		
 		comlog:function(user,params){
+			
 			if(!user.isAppManager()){
 				return;
 			}
@@ -293,8 +291,20 @@ var App = (new function () {
 				var msg = 'Übersicht der Logs °#°'
 				for(i=0;i<logids.length;i++){
 					var logdata = KnuddelsServer.getPersistence().getObject('_logs'+logids[i], {});
+										
+					if(logdata.commend != undefined){
+						msg += '°>ID:'+logids[i]+' ~ '+logdata.commend+'|/showlog '+logids[i]+'<°'
+					} else {
+						msg += '°>ID:'+logids[i]+' - Am: '+ new Date(logdata.datum)+' mit ' + logdata.uir.join(',')+'|/showlog '+logids[i]+'<°'
+					}
 					
-					msg += ' °>ID:'+logids[i]+' - Am: '+ new Date(logdata.datum)+' mit ' + logdata.uir.join(',')+'|/showlog '+logids[i]+'<° °#°'
+					
+					msg += ' °YY°°>Umbenennen|/tf-overridesb /comlog '+logids[i]+'~~[NeuerTittel]<° °RR° °>Löschen|/dellog '+logids[i]+'<°°r° '
+					
+					if(logdata.commend != undefined){
+						msg += '°>Umbennung löschen|/resetName '+logids[i]+'<°°#°';
+					}
+					msg += '°#°'				
 				}
 				
 				user.sendPrivateMessage(msg);

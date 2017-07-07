@@ -230,9 +230,9 @@ var App = (new function () {
 					var logdata = KnuddelsServer.getPersistence().getObject('_logs'+logids[i], {});
 										
 					if(logdata.commend != undefined){
-						msg += '°>ID:'+logids[i]+' ~ '+logdata.commend+'|/showlog '+logids[i]+'<°'
+						msg += '°>ID:'+logids[i]+' ~ '+logdata.commend.escapeKCode()+'|/showlog '+logids[i]+'<°'
 					} else {
-						msg += '°>ID:'+logids[i]+' - Am: '+ new Date(logdata.datum)+' mit ' + logdata.uir.join(',')+'|/showlog '+logids[i]+'<°'
+						msg += '°>ID:'+logids[i]+' - Am: '+ new Date(logdata.datum)+' mit ' + logdata.uir.join(',').escapeKCode()+'|/showlog '+logids[i]+'<°'
 					}
 					
 					
@@ -255,7 +255,7 @@ var App = (new function () {
 					//logdata = {id: id, datum: times, uir: users, txt:[]};
 					var logdata = KnuddelsServer.getPersistence().getObject('_logs'+params, {});
 					
-					var msg = 'Log '+logdata.id + ' vom '+ new Date(logdata.datum) +' mit '+logdata.uir.join(',')+' °#°'
+					var msg = 'Log '+logdata.id + ' vom '+ new Date(logdata.datum) +' mit '+logdata.uir.join(',').escapeKCode()+' °#°'
 						msg += logdata.txt.join('°#°');
 						user.sendPrivateMessage(msg);
 				}		
@@ -293,9 +293,9 @@ var App = (new function () {
 					var logdata = KnuddelsServer.getPersistence().getObject('_logs'+logids[i], {});
 										
 					if(logdata.commend != undefined){
-						msg += '°>ID:'+logids[i]+' ~ '+logdata.commend+'|/showlog '+logids[i]+'<°'
+						msg += '°>ID:'+logids[i]+' ~ '+logdata.commend.escapeKCode()+'|/showlog '+logids[i]+'<°'
 					} else {
-						msg += '°>ID:'+logids[i]+' - Am: '+ new Date(logdata.datum)+' mit ' + logdata.uir.join(',')+'|/showlog '+logids[i]+'<°'
+						msg += '°>ID:'+logids[i]+' - Am: '+ new Date(logdata.datum)+' mit ' + logdata.uir.join(',').escapeKCode()+'|/showlog '+logids[i]+'<°'
 					}
 					
 					
